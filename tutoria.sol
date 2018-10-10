@@ -5,7 +5,7 @@ contract Tutoria {
     address idProfesor;
     address alumno;
 
-    function pedirTutoria (string mater, address idProf) public{
+    function pedir (string mater, address idProf) public{
         materia = mater;
         idProfesor = idProf;
         require(idProf != msg.sender);
