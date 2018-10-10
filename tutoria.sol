@@ -59,12 +59,14 @@ contract Tutoria {
         return t.cancelado;
     }
 
-    function esConfirmado() public returns (address) {
-
+    function estaConfirmado(address key) public view returns (uint) {
+        tutoriaData t = tutorias[key];
+        return t.confirmado;
     }
 
-    function estaConfirmado() public returns (address){
-
+    function estaCancelado(address key) public view returns (uint){
+        tutoriaData t = tutorias[key];
+        return t.cancelado;
     }
 
 }
