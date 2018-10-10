@@ -7,6 +7,8 @@ contract Tutoria {
         address alumno;
         uint confirmado;
         uint cancelado;
+        bytes32 hash;
+
 
     }
 
@@ -21,6 +23,7 @@ contract Tutoria {
         t.idProfesor = _idProfesor;
         t.confirmado = 0;
         t.cancelado = 0;
+        t.hash = keccak256(t.alumno, t.materia, t.idProfesor, t.confirmado, t.cancelado);
         //tutoriaData.materia = _materia;
         //tutoriaData.idProfesor = _idProfesor;
         require(t.idProfesor != msg.sender);
@@ -33,6 +36,11 @@ contract Tutoria {
     function getMateria(address key) public view returns (string) {
         tutoriaData t = tutorias[key];
         return t.materia;
+    }
+
+    function getHash(address key) public view returns (bytes32) {
+        tutoriaData t = tutorias[key];
+        return t.hash;
     }
 
     function getIdProfesor(address key) public view returns (address) {
