@@ -8,6 +8,7 @@ contract Tutoria {
     constructor (string mater, address idProf) public{
         materia = mater;
         idProfesor = idProf;
+        require(idProf != msg.sender);
         alumno = msg.sender;
     }
 
@@ -16,6 +17,7 @@ contract Tutoria {
     }
 
     function getIdProfesor() public view returns (address) {
+
         return idProfesor;
     }
 
