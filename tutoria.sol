@@ -1,40 +1,62 @@
 pragma solidity ^0.4.7;
 contract Tutoria {
+
     struct tutoriaData{
         string materia;
         address idProfesor;
         address alumno;
+        uint confirmado;
+        uint cancelado;
+
     }
 
     tutoriaData[] public tuto;
 
-    function pedir (string mater, address idProf) public{
-        tutoriaData.materia = mater;
-        tutoriaData.idProfesor = idProf;
-        require(tutoriaData.idProf != msg.sender);
-        tutoriaData.alumno = msg.sender;
-
-    }
     mapping (address => tutoriaData) tutorias;
-    function getMateria() public view returns (string) {
-        return tutoriaData.materia;
+    function solicitar (string _materia, address _idProfesor) public{
+
+        tutoriaData t = tutorias[msg.sender];
+        t.alumno = msg.sender;
+        t.materia = _materia;
+        t.idProfesor = _idProfesor;
+        t.confirmado = 0;
+        t.cancelado = 0;
+        //tutoriaData.materia = _materia;
+        //tutoriaData.idProfesor = _idProfesor;
+        require(t.idProfesor != msg.sender);
+        //tutoriaData.alumno = msg.sender;
+        tuto.push(t);
+
     }
 
-    function getIdProfesor() public view returns (address) {
 
-        return tutoriaData.idProfesor;
+    function getMateria(address key) public view returns (string) {
+        tutoriaData t = tutorias[key];
+        return t.materia;
     }
 
-    function getAlumno() public view returns (address) {
-        return tutoriaData.alumno;
+    function getIdProfesor(address key) public view returns (address) {
+        tutoriaData t = tutorias[key];
+        return t.idProfesor;
     }
 
-    function confirmar() public returns (uint) {
-        return 0;
+    function getAlumno(address key) public view returns (address) {
+        tutoriaData t = tutorias[key];
+        return t.alumno;
     }
 
-    function cancelar() public returns (address) {
+    function confirmar(address key) public view returns (uint) {
+        tutoriaData t = tutorias[key];
+        require(msg.sender == t.idProfesor);
+        t.confirmado = 1;
+        return t.confirmado;
+    }
 
+    function cancelar(address key) public view returns (uint) {
+        tutoriaData t = tutorias[key];
+        require(msg.sender == t.alumno);
+        t.cancelado = 1;
+        return t.cancelado;
     }
 
     function esConfirmado() public returns (address) {
