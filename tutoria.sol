@@ -11,11 +11,11 @@ contract Tutoria {
         alumno = msg.sender;
     }
 
-    function getMateria() public returns (string) {
+    function getMateria() public view returns (string) {
         return materia;
     }
 
-    function getIdProfesor() public returns (address) {
+    function getIdProfesor() public view returns (address) {
         return idProfesor;
     }
 
