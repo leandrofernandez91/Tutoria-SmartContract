@@ -1,100 +1,80 @@
 pragma solidity ^0.4.7;
 contract Tutoria {
-
-    struct tutoriaData{
+    
+    mapping (address => TutoriaData)  Tutorias;
+    
+    
+    struct TutoriaData {
         string materia;
         address idProfesor;
         address alumno;
         uint confirmado;
         uint cancelado;
+        uint fecha;
         bytes32 hash;
-
-
     }
-    tutoriaData[] public tuto;
-    tutoriaData[] public tutoConf;
-    tutoriaData[] public tutoCanc;
-
-    mapping (bytes32 => tutoriaData) tutorias;
-
-
-    function solicitar (string _materia, address _idProfesor) public returns(bytes32){
-        require(_idProfesor != msg.sender);
-        bytes32 hashAux = keccak256(_materia, _idProfesor);
-        tutoriaData t = tutorias[hashAux];
+    
+    function solicitar(string mater, address idProf) public{
+        require(msg.sender != idProf);
+        TutoriaData t = Tutorias[msg.sender];
+        t.materia = mater;
+        t.idProfesor = idProf;
         t.alumno = msg.sender;
-        t.materia = _materia;
-        t.idProfesor = _idProfesor;
         t.confirmado = 0;
         t.cancelado = 0;
-        t.hash = hashAux;
-        tuto.push(t);
-        return hashAux;
+        t.fecha = block.timestamp;
+        t.hash = keccak256(t.materia,t.idProfesor,t.alumno,t.confirmado,t.cancelado,t.fecha);
+    }
+    
+    function getFecha(address key) public view returns (uint) {
+        TutoriaData t = Tutorias[key];
+        return t.fecha;
     }
 
-
-    function getMateria(bytes32 key) public view returns (string) {
-        tutoriaData t = tutorias[key];
+    function getHash(address key) public view returns (bytes32) {
+        return Tutorias[key].hash;
+    }
+    
+    function getMateria(address key) public view returns (string) {
+        TutoriaData t = Tutorias[key];
         return t.materia;
     }
-
-    function getHash(bytes32 key) public view returns (bytes32) {
-        tutoriaData t = tutorias[key];
-        return t.hash;
-    }
-
-    function getIdProfesor(bytes32 key) public view returns (address) {
-        tutoriaData t = tutorias[key];
+    
+    function getIdProfesor(address key) public view returns (address) {
+        TutoriaData t = Tutorias[key];
         return t.idProfesor;
     }
-
-    function getAlumno(bytes32 key) public view returns (address) {
-        tutoriaData t = tutorias[key];
-        return t.alumno;
+    
+    function getAlumno(address key) public view returns (address) {
+        TutoriaData t = Tutorias[key];
+        return Tutorias[key].alumno;
     }
-
-    function confirmar(bytes32 key) public{
-        tutoriaData storage t = tutorias[key];
-        require(msg.sender == t.idProfesor);
-        t.confirmado = 1;
-        tutoConf.push(t);
+    
+    function confirmar(address key) public returns (uint) {
+        TutoriaData t = Tutorias[key];
+        require(t.idProfesor == msg.sender);
+        require(t.confirmado == 0);
+        require(t.cancelado == 0);
+        return t.confirmado = 1;
     }
-
-    function cancelar(bytes32 key) public{
-        tutoriaData t = tutorias[key];
-        require(msg.sender == t.alumno);
-        t.cancelado = 1;
-        tutoCanc.push(t);
-    }
-
-    function estaConfirmado(bytes32 key) public view returns (uint) {
-        tutoriaData t = tutorias[key];
-        return t.confirmado;
-    }
-
-    function estaCancelado(bytes32 key) public view returns (uint){
-        tutoriaData t = tutorias[key];
+    
+    function cancelar(address key) public returns (uint) {
+        TutoriaData t = Tutorias[key];
+        require(t.alumno == msg.sender);
+        require(t.confirmado == 0);
+        require(t.cancelado == 0);
+        t.cancelado=1;
         return t.cancelado;
     }
-
-}
-
-
-    function cancelar(uint256 key) public{
-        tutoriaData t = tutorias[key];
-        require(msg.sender == t.alumno);
-        t.cancelado = 1;
-        tutoCanc.push(t);
+    
+    function estaConfirmado(address key) public view returns (uint){
+        TutoriaData t = Tutorias[key];
+        return t.confirmado;   
     }
-
-    function estaConfirmado(uint256 key) public view returns (uint) {
-        tutoriaData t = tutorias[key];
-        return t.confirmado;
-    }
-
-    function estaCancelado(uint256 key) public view returns (uint){
-        tutoriaData t = tutorias[key];
+    
+    function estaCancelado(address key) public view returns (uint){
+        TutoriaData t = Tutorias[key];
         return t.cancelado;
     }
-
+    
 }
