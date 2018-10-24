@@ -35,21 +35,9 @@
       <form action="/metodos" method="POST">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Alumno&nbsp&nbsp</label>
+            <label class="input-group-text" for="inputGroupSelect01">Id de Tutoria:</label>
           </div>
-          <select class="custom-select" name="usuario" id="usuario">
-              <option value="0xedb0e48927a72e9dc907afd23d9794586acfd149">Sebastian</option>
-              <option value="0xbf965026809eeda78bd15e66ed185220fbc44c0b">Leandro</option>
-              <option value="0x2af24ec65db90aa75fc9c918da71e498c6812efe">Jose</option>
-              <option value="0xb84d66b9aa22c77cb82b756a64dba9e26719b4d7">Cristian</option>
-              <option value="0xbd7b59c5c01e860150200df323b703228625eff7">Sergio</option>
-              <option value="0xcffd857638c1e8e5dcb8df934f6c2d8fd12fea61">Facundo</option>
-              <option value="0xfd8fc5f54264089778fe45d188b1636d9399ce5e">Gonsalo</option>
-              <option value="0xfd730bab2d10d2179aec947409e2f0c5d1ac5021">Gonzalo</option>
-              <option value="0x95f4c7b52bd3890dd6ab2a488d51414b3b961eca">Martin</option>
-              <option value="0xff7cbcb3bae4b13db50860a023e31f4a0b0bfa46">Agustin</option>
-              
-          </select>
+          <input type="number" id="usuario" name="usuario" value=>
       </div>
       
       <div class="input-group mb-3">
@@ -57,19 +45,38 @@
         <label class="input-group-text" for="inputGroupSelect01">Método</label>
       </div>
       <select class="custom-select" name="metodo" id="metodo">
-        <option value="1">PedirMateria</option>
-        <option value="2">Fecha de creacion de Solicitar</option>
-        <option value="3">PedirProfesor</option>
-        <option value="4">PedirAlumno</option>
+        <option value="">Seleccione una Consulta</option>
+        <option value="1">Materia</option>
+        <option value="2">Informacion sobre una tutoria</option>
+        <option value="3">Profesor</option>
+        <option value="4">Alumno</option>
         <option value="5">Confirmar Tutoria (Profesor)</option>
         <option value="6">Cancelar Tutoria (Alumno)</option>
-        <option value="7">EstaConfirmado?</option>
-        <option value="8">EstaCancelado?</option>
+        <option value="7">Esta Confirmada?</option>
+        <option value="8">Esta Cancelada?</option>
       </select>
       </div>
-      <br>
-      <button type="submit" class="btn btn-primary btn-lg btn-outline-success">Aceptar</button>
-      <!--<input type="submit" value="Ejecutar Metodo!">-->
+      
+      <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect01">Usuario:</label>
+      </div>
+        <select class="custom-select" name="cierre" id="cierre">
+         <option value="">Seleccione un Usuario</option>
+         <option value="0xedb0e48927a72e9dc907afd23d9794586acfd149">Sebastian</option>
+         <option value="0xbf965026809eeda78bd15e66ed185220fbc44c0b">Leandro</option>
+         <option value="0x2af24ec65db90aa75fc9c918da71e498c6812efe">Jose</option>
+         <option value="0xb84d66b9aa22c77cb82b756a64dba9e26719b4d7">Cristian</option>
+         <option value="0xbd7b59c5c01e860150200df323b703228625eff7">Sergio</option>
+         <option value="0xcffd857638c1e8e5dcb8df934f6c2d8fd12fea61">Facundo</option>
+         <option value="0xfd8fc5f54264089778fe45d188b1636d9399ce5e">Gonsalo</option>
+         <option value="0xfd730bab2d10d2179aec947409e2f0c5d1ac5021">Gonzalo</option>
+         <option value="0x95f4c7b52bd3890dd6ab2a488d51414b3b961eca">Martin</option>
+         <option value="0xff7cbcb3bae4b13db50860a023e31f4a0b0bfa46">Agustin</option>  
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-outline-success">Ejecutar</button>
 
     </form>
     </div>

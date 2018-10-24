@@ -2,7 +2,7 @@ pragma solidity ^0.4.7;
 contract Tutoria {
     
     mapping (address => TutoriaData)  Tutorias;
-    
+    mapping (bytes32 => TutoriaData) TutoriasHash;
     
     struct TutoriaData {
         string materia;
@@ -13,8 +13,9 @@ contract Tutoria {
         uint fecha;
         bytes32 hash;
     }
-    
-    function solicitar(string mater, address idProf) public{
+
+    function solicitar(string mater, address idProf) public returns (bytes32){
+        bytes32 hashTemp = keccak256(mater,idProf,msg.sender,block.timestamp);
         require(msg.sender != idProf);
         TutoriaData t = Tutorias[msg.sender];
         t.materia = mater;
@@ -23,12 +24,13 @@ contract Tutoria {
         t.confirmado = 0;
         t.cancelado = 0;
         t.fecha = block.timestamp;
-        t.hash = keccak256(t.materia,t.idProfesor,t.alumno,t.confirmado,t.cancelado,t.fecha);
+        t.hash = hashTemp;
+        //TutoriasHash[hashTemp]=t;
+        return t.hash;
     }
     
     function getFecha(address key) public view returns (uint) {
-        TutoriaData t = Tutorias[key];
-        return t.fecha;
+        return Tutorias[key].fecha;
     }
 
     function getHash(address key) public view returns (bytes32) {
@@ -36,45 +38,38 @@ contract Tutoria {
     }
     
     function getMateria(address key) public view returns (string) {
-        TutoriaData t = Tutorias[key];
-        return t.materia;
+        return Tutorias[key].materia;
     }
     
     function getIdProfesor(address key) public view returns (address) {
-        TutoriaData t = Tutorias[key];
-        return t.idProfesor;
+        return Tutorias[key].idProfesor;
     }
     
     function getAlumno(address key) public view returns (address) {
-        TutoriaData t = Tutorias[key];
         return Tutorias[key].alumno;
     }
     
     function confirmar(address key) public returns (uint) {
-        TutoriaData t = Tutorias[key];
-        require(t.idProfesor == msg.sender);
-        require(t.confirmado == 0);
-        require(t.cancelado == 0);
-        return t.confirmado = 1;
+        require(Tutorias[key].idProfesor == msg.sender);
+        require(Tutorias[key].confirmado == 0);
+        require(Tutorias[key].cancelado == 0);
+        return Tutorias[key].confirmado = 1;
     }
     
-    function cancelar(address key) public returns (uint) {
-        TutoriaData t = Tutorias[key];
-        require(t.alumno == msg.sender);
-        require(t.confirmado == 0);
-        require(t.cancelado == 0);
-        t.cancelado=1;
-        return t.cancelado;
+    function cancelar(address key) public returns (uint){
+
+        require(Tutorias[key].alumno == msg.sender);
+        require(Tutorias[key].confirmado == 0);
+        require(Tutorias[key].cancelado == 0);
+        return Tutorias[key].cancelado=1;
     }
     
     function estaConfirmado(address key) public view returns (uint){
-        TutoriaData t = Tutorias[key];
-        return t.confirmado;   
+        return Tutorias[key].confirmado;   
     }
     
     function estaCancelado(address key) public view returns (uint){
-        TutoriaData t = Tutorias[key];
-        return t.cancelado;
+        return Tutorias[key].cancelado;
     }
     
 }
